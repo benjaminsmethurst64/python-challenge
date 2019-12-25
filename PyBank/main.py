@@ -1,11 +1,11 @@
-# Modules
+# import libraries 
 import os
 import csv
 
-# Set path for file
+# file path for csv 
 csvpath = os.path.join("Resources", "budget_data.csv")
 
-# Set variables
+# declare variables: months, profit losses, month changes, increases, greatest month increaes
 total_months = 0
 total_profit_loss = 0
 prev_profit_loss = 0
@@ -17,45 +17,34 @@ greatest_increase_month = ""
 greatest_decrease = 0
 greatest_increase_month = ""
 
-# Open the CSV
+# csv open 
 with open(csvpath, newline="") as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
-    
-    # Read the header row first
+    csvreader = csv.reader(csvfile, delimiter=",")   
     csv_header = next(csvreader)
-    
-    # Read each row of data after the header
+# begin for loop  
     for row in csvreader:
-        # count the total number of months
         total_months += 1
         
-        # add up the total net profit/loss
         total_profit_loss += int(row[1])
         
-        # calculate the change in profit/loss between months
         if total_months > 1:
             month_change = int(row[1]) - prev_profit_loss
             
-        # add up the total monthly change, used later to calculate average
-        total_month_change += month_change
-        
-        # set profit/loss value for previous month
+        total_month_change += month_change   
         prev_profit_loss = int(row[1])
         
-        # calculate greatest increase in profits
         if month_change > greatest_increase:
             greatest_increase = month_change
             greatest_increase_month = row[0]
         
-        # calculate greatest decrease in losses
         if month_change < greatest_decrease:
             greatest_decrease = month_change
             greatest_decrease_month = row[0]
 
-# calculate average change between months        
+# divide for average change between months        
 average_month_change = total_month_change / (total_months - 1)
 
-# Print the analysis to terminal
+# terminal print w/lines for visual 
 print("Financial Analysis")
 print("----------------------------")        
 print("Total Months: " + str(total_months))
@@ -66,7 +55,7 @@ print("Greatest Increase in Profits: " + greatest_increase_month
 print("Greatest Decrease in Profits: " + greatest_decrease_month 
       + " ($" + str(greatest_decrease) + ")")
 
-# Write to text file
+# print to file in PyBank folder
 f = open("analysis.txt", "w")
 f.write("Financial Analysis\n")
 f.write("----------------------------\n")        
